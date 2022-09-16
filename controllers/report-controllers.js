@@ -1,19 +1,19 @@
-exports.getAllReports = (req, res) => {
+exports.getAllReports = async (req, res) => {
   res.send("get all reports");
 };
 
-exports.getSingleReport = (req, res) => {
+exports.getSingleReport = async (req, res) => {
   res.send("get single report");
 };
 
-exports.createReport = (req, res) => {
+exports.createReport = async (req, res) => {
   res.send("create report");
 };
 
-exports.updateReport = (req, res) => {
+exports.updateReport = async (req, res) => {
   res.send("update report");
 };
 
-exports.deleteReport = (req, res) => {
+exports.deleteReport = async (req, res) => {
   res.send("delete report");
 };

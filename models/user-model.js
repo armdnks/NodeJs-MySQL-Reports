@@ -1,15 +1,19 @@
-const { Sequelize } = require("sequelize");
-const db = require("../config/database");
+const { Sequelize, DataTypes } = require("sequelize");
+const sequelize = new Sequelize("sqlite::memory:");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
-const { DataTypes } = Sequelize;
+const db = require("../config/database");
+const generateMD5 = require("../utils/generate-md5");
 
 const User = db.define(
   "users",
   {
-    uuid: {
+    id: {
       type: DataTypes.STRING,
-      defaultValue: DataTypes.UUIDV4,
+      defaultValue: generateMD5(),
       allowNull: false,
+      primaryKey: true,
       validate: {
         notEmpty: true,
       },
@@ -25,6 +29,7 @@ const User = db.define(
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: true,
       validate: {
         notEmpty: true,
         isEmail: true,
@@ -39,6 +44,7 @@ const User = db.define(
     },
     role: {
       type: DataTypes.STRING,
+      defaultValue: "user",
       allowNull: false,
       validate: {
         notEmpty: true,
@@ -49,5 +55,20 @@ const User = db.define(
     freezeTableName: true,
   }
 );
+
+User.beforeCreate(async (user, options) => {
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(user.password, salt);
+});
+
+User.prototype.matchPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
+
+User.prototype.getJwtToken = function () {
+  return jwt.sign({ id: this.id }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRE,
+  });
+};
 
 module.exports = User;
