@@ -1,5 +1,6 @@
 # private
 _private/
+config/config.env
 
 # https://github.com/github/gitignore/blob/main/Node.gitignore
 

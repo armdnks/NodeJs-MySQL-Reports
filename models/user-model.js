@@ -1,5 +1,4 @@
-const { Sequelize, DataTypes } = require("sequelize");
-const sequelize = new Sequelize("sqlite::memory:");
+const { DataTypes } = require("sequelize");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
@@ -8,47 +7,36 @@ const generateMD5 = require("../utils/generate-md5");
 
 const User = db.define(
   "users",
+  // FIXME: the id || reportId
   {
     id: {
       type: DataTypes.STRING,
       defaultValue: generateMD5(),
       allowNull: false,
       primaryKey: true,
-      validate: {
-        notEmpty: true,
-      },
+      validate: { notEmpty: true },
     },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-        len: [3, 100],
-      },
+      validate: { notEmpty: true, len: [3, 100] },
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
       unique: true,
-      validate: {
-        notEmpty: true,
-        isEmail: true,
-      },
+      validate: { notEmpty: true, isEmail: true },
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      validate: { notEmpty: true },
     },
     role: {
       type: DataTypes.STRING,
       defaultValue: "user",
       allowNull: false,
-      validate: {
-        notEmpty: true,
-      },
+      validate: { notEmpty: true },
     },
   },
   {
