@@ -2,9 +2,20 @@ const ErrorResponse = require("../utils/error-response");
 const User = require("../models/user-model");
 
 /**
- * @desc    GET ALL USERS
- * @route   GET /api/v1/users
- * @access  private admin
+ *  ### GET ALL USERS
+ *
+ *  @method   GET
+ *  @route    /api/v1/users
+ *  @access   private admin
+ *
+ *  @example
+ *  // URL/api/v1/users/
+ *
+ *  [
+ *    // all users data
+ *    // { ... }
+ *  ]
+ *
  */
 exports.getAllUsers = async (req, res) => {
   const users = await User.findAll();
@@ -12,9 +23,24 @@ exports.getAllUsers = async (req, res) => {
 };
 
 /**
- * @desc    GET SINGLE USER
- * @route   GET /api/v1/users/:id
- * @access  private admin
+ *  ### GET SINGLE USER
+ *
+ *  @method   GET
+ *  @route    /api/v1/users/:id
+ *  @access   private admin
+ *
+ *  @param    {String} id User ID
+ *  @example
+ *  // URL/api/v1/users/1234567890
+ *
+ *  {
+ *    "id": "1234567890",
+ *     "name": "John Doe",
+ *     "email": "john@demo.com",
+ *     "password": "$2a$10$H1QaBWJqndK.GXTjL7MCF.BV94CdnrW8Eh9iPwZT8lOp7JnEYgp7W",
+ *     "role": "user"
+ *  }
+ *
  */
 exports.getSingleUser = async (req, res) => {
   const user = await User.findOne({
@@ -27,9 +53,22 @@ exports.getSingleUser = async (req, res) => {
 };
 
 /**
- * @desc    CREATE USER
- * @route   POST /api/v1/users
- * @access  private admin
+ *  ### CREATE USER
+ *
+ *  @method   POST
+ *  @route    /api/v1/reports
+ *  @access   private admin
+ *
+ *  @example
+ *  // URL/api/v1/users/
+ *
+ *  {
+ *    "name": "Jane Doe",
+ *    "email": "jane@demo.com",
+ *    "password": "demodemo",
+ *    "confirmPassword": "demodemo"
+ *  }
+ *
  */
 exports.createUser = async (req, res) => {
   const { name, email, password, confirmPassword, role } = req.body;
@@ -44,9 +83,21 @@ exports.createUser = async (req, res) => {
 };
 
 /**
- * @desc    UPDATE USER
- * @route   PUT /api/v1/users/:id
- * @access  private admin
+ *  ### UPDATE REPORT
+ *
+ *  @method   PUT
+ *  @route    /api/v1/users/:id
+ *  @access   private admin
+ *
+ *  @param    {String} id User ID
+ *  @example
+ *  // URL/api/v1/users/1234567890
+ *
+ *  {
+ *    "name": "Update User",
+ *    "email": "update_email@demo.com"
+ *  }
+ *
  */
 exports.updateUser = async (req, res) => {
   let user = await User.findOne({
@@ -76,9 +127,15 @@ exports.updateUser = async (req, res) => {
 };
 
 /**
- * @desc    DELETE USER
- * @route   DELETE /api/v1/users/:id
- * @access  private admin
+ *  ### DELETE REPORT
+ *
+ *  @method   DELETE
+ *  @route    /api/v1/users/:id
+ *  @access   private admin
+ *
+ *  @param    {String} id User ID
+ *  @returns  \{} Empty object
+ *
  */
 exports.deleteUser = async (req, res) => {
   const user = await User.findOne({
