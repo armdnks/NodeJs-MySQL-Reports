@@ -2,16 +2,27 @@ const ErrorResponse = require("../utils/error-response");
 const User = require("../models/user-model");
 
 /**
- * @desc    REGISTER USER
- * @route   POST /api/v1/auth/register
- * @access  public
+ *  ### REGISTER USER
+ *
+ *  @method   POST
+ *  @route    /api/v1/auth/register
+ *  @access   public
+ *
+ *  @example
+ *  {
+ *    "name": "John Doe",
+ *    "email": "john@demo.com",
+ *    "password": "demodemo",
+ *    "confirmPassword": "demodemo"
+ *  }
+ *
  */
 exports.registerUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, confirmPassword } = req.body;
 
-  // if (password !== confirmPassword) {
-  //   throw new ErrorResponse("Password does not match", 400);
-  // }
+  if (password !== confirmPassword) {
+    throw new ErrorResponse("Password does not match", 400);
+  }
 
   const user = await User.create({ name, email, password });
 
@@ -19,9 +30,18 @@ exports.registerUser = async (req, res) => {
 };
 
 /**
- * @desc    LOGIN USER
- * @route   POST /api/v1/auth/login
- * @access  public
+ *  ### LOGIN USER
+ *
+ *  @method   POST
+ *  @route    /api/v1/auth/login
+ *  @access   public
+ *
+ *  @example
+ *  {
+ *    "email": "john@demo.com",
+ *    "password": "demodemo",
+ *  }
+ *
  */
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
@@ -40,9 +60,12 @@ exports.loginUser = async (req, res) => {
 };
 
 /**
- * @desc    LOGOUT USER
- * @route   GET /api/v1/auth/logout
- * @access  private
+ *  ### LOGOUT USER
+ *
+ *  @method   GET
+ *  @route    /api/v1/auth/logout
+ *  @access   private
+ *
  */
 exports.logoutUser = async (req, res) => {
   res.cookie("token", "logout", {
@@ -54,18 +77,26 @@ exports.logoutUser = async (req, res) => {
 };
 
 /**
- * @desc    GET ME
- * @route   GET /api/v1/auth/me
- * @access  private
+ *  ### GET ME
+ *
+ *  @method   GET
+ *  @route    /api/v1/auth/me
+ *  @access   private
+ *
  */
 exports.getMe = async (req, res) => {
-  const user = await User.findOne({ where: { id: req.user.id } });
+  const user = await User.findOne({
+    where: { id: req.user.id },
+    attributes: ["name", "email"],
+  });
 
   res.status(200).json({ success: true, data: user });
 };
 
 /**
- * @desc Get token from model, create cookie and send response
+ *  ### GET TOKEN
+ *
+ *  @desc   Get token from model, create cookie and send response
  */
 const sendTokenResponse = (user, statusCode, res) => {
   const token = user.getJwtToken(); // Create token
