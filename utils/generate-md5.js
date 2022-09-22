@@ -1,6 +1,7 @@
 const generateMD5 = () => {
-  const char4 = () => Math.random().toString(16).slice(-4);
-  return char4() + char4() + char4() + char4() + char4();
+  return Array.from({ length: 6 }, () => {
+    return (new Date().getTime() * Math.random()).toString(16).replace(/[.]/g, "").slice(-4);
+  }).join("");
 };
 
 module.exports = generateMD5;

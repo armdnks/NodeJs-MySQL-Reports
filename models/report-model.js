@@ -1,5 +1,5 @@
-const { DataTypes } = require("sequelize");
-
+const { Sequelize } = require("sequelize");
+const { DataTypes } = Sequelize;
 const db = require("../config/database");
 const generateMD5 = require("../utils/generate-md5");
 const User = require("./user-model");
@@ -9,7 +9,7 @@ const Report = db.define(
   {
     id: {
       type: DataTypes.STRING,
-      defaultValue: generateMD5(),
+      defaultValue: () => generateMD5(),
       allowNull: false,
       primaryKey: true,
       validate: { notEmpty: true },
@@ -26,7 +26,6 @@ const Report = db.define(
     },
     userId: {
       type: DataTypes.STRING,
-      defaultValue: generateMD5(),
       allowNull: false,
       validate: { notEmpty: true },
     },

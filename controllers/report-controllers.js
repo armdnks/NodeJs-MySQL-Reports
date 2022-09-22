@@ -9,6 +9,7 @@ const User = require("../models/user-model");
  */
 exports.getAllReports = async (req, res) => {
   const isAdmin = req.user.role === "admin" ? null : { userId: req.user.id };
+
   const reports = await Report.findAll({
     where: isAdmin,
     include: [{ model: User, attributes: ["name", "email"] }],
@@ -24,11 +25,14 @@ exports.getAllReports = async (req, res) => {
  */
 exports.getSingleReport = async (req, res) => {
   const isAdmin = req.user.role === "admin" ? { id: req.params.id } : { id: req.params.id, userId: req.user.id };
+
   const report = await Report.findOne({
     where: isAdmin,
     include: [{ model: User, attributes: ["name", "email"] }],
   });
+
   if (!report) throw new ErrorResponse("Report not found", 404);
+
   res.status(200).json({ success: true, data: report });
 };
 

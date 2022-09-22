@@ -7,11 +7,11 @@ const User = require("../models/user-model");
  * @access  public
  */
 exports.registerUser = async (req, res) => {
-  const { name, email, password, confirmPassword } = req.body;
+  const { name, email, password } = req.body;
 
-  if (password !== confirmPassword) {
-    throw new ErrorResponse("Password does not match", 400);
-  }
+  // if (password !== confirmPassword) {
+  //   throw new ErrorResponse("Password does not match", 400);
+  // }
 
   const user = await User.create({ name, email, password });
 
@@ -25,6 +25,7 @@ exports.registerUser = async (req, res) => {
  */
 exports.loginUser = async (req, res) => {
   const { email, password } = req.body;
+
   if (!email || !password) {
     throw new ErrorResponse("Please provide an email and password", 400);
   }
@@ -59,6 +60,7 @@ exports.logoutUser = async (req, res) => {
  */
 exports.getMe = async (req, res) => {
   const user = await User.findOne({ where: { id: req.user.id } });
+
   res.status(200).json({ success: true, data: user });
 };
 

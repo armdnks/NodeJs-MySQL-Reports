@@ -8,9 +8,9 @@ const app = express();
 app.use(express.json());
 
 // DATABASE
-// const db = require("./config/database");
-// (async () => await db.sync())();
-// db.sync();
+const db = require("./config/database");
+(async () => await db.sync())();
+db.sync();
 
 // SUPPORT LIBRARY
 const cors = require("cors");
